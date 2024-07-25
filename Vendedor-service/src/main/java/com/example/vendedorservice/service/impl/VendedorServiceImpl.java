@@ -1,5 +1,6 @@
 package com.example.vendedorservice.service.impl;
 
+import com.example.vendedorservice.dao.VendedorDAO;
 import com.example.vendedorservice.model.Vendedor;
 import com.example.vendedorservice.service.VendedorService;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,14 @@ import java.util.List;
 
 @Service
 public class VendedorServiceImpl implements VendedorService {
+
+    final
+    VendedorDAO dao;
+
+    public VendedorServiceImpl(VendedorDAO dao) {
+        this.dao = dao;
+    }
+
     @Override
     public Vendedor getVendedor(Integer vendedorId) {
         return null;
@@ -20,7 +29,8 @@ public class VendedorServiceImpl implements VendedorService {
 
     @Override
     public String createVendedor(Vendedor vendedor) {
-        return null;
+        dao.save(vendedor);
+        return "Vendedor creado";
     }
 
     @Override
