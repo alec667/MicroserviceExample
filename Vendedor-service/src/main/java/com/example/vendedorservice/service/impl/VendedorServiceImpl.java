@@ -1,6 +1,7 @@
 package com.example.vendedorservice.service.impl;
 
 import com.example.vendedorservice.dao.VendedorDAO;
+import com.example.vendedorservice.exception.VendedorNotFoundException;
 import com.example.vendedorservice.model.Vendedor;
 import com.example.vendedorservice.service.VendedorService;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class VendedorServiceImpl implements VendedorService {
             vendedor = optional.get();
             return vendedor;
         }else {
-            return null;
+            throw new VendedorNotFoundException("Vendedor no encontrado");
         }
 
     }
