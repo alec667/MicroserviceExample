@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "vendedor")
 public class VendedorController {
@@ -23,6 +25,11 @@ public class VendedorController {
     @GetMapping(path = "{vendedorId}", produces = "application/json")
     public ResponseEntity<Vendedor> getVendedor(@PathVariable("vendedorId") Integer vendedorId ){
         return new ResponseEntity<>(vendedorService.getVendedor(vendedorId), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/all", produces = "application/json")
+    public ResponseEntity<List<Vendedor>> getAllVendedor(){
+        return new ResponseEntity<>(vendedorService.getAllVendedor(), HttpStatus.OK);
     }
 
 }

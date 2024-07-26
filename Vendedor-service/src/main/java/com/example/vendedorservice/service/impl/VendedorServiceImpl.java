@@ -6,6 +6,7 @@ import com.example.vendedorservice.model.Vendedor;
 import com.example.vendedorservice.service.VendedorService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +35,10 @@ public class VendedorServiceImpl implements VendedorService {
 
     @Override
     public List<Vendedor> getAllVendedor() {
-        return null;
+        List<Vendedor> vendedorList = new ArrayList<>();
+        vendedorList = dao.findAll();
+        return vendedorList;
+
     }
 
     @Override
