@@ -18,23 +18,28 @@ public class VendedorController {
     VendedorService vendedorService;
 
     @PostMapping(path = "create", consumes = "application/json")
-    public ResponseEntity<String> createVendedor(@RequestBody Vendedor vendedor){
+    public ResponseEntity<String> createVendedor(@RequestBody Vendedor vendedor) {
         return new ResponseEntity<>(vendedorService.createVendedor(vendedor), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "{vendedorId}", produces = "application/json")
-    public ResponseEntity<Vendedor> getVendedor(@PathVariable("vendedorId") Integer vendedorId ){
+    public ResponseEntity<Vendedor> getVendedor(@PathVariable("vendedorId") Integer vendedorId) {
         return new ResponseEntity<>(vendedorService.getVendedor(vendedorId), HttpStatus.OK);
     }
 
     @GetMapping(path = "/all", produces = "application/json")
-    public ResponseEntity<List<Vendedor>> getAllVendedor(){
+    public ResponseEntity<List<Vendedor>> getAllVendedor() {
         return new ResponseEntity<>(vendedorService.getAllVendedor(), HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Vendedor> updateVendedor(@RequestBody Vendedor vendedor){
+    public ResponseEntity<Vendedor> updateVendedor(@RequestBody Vendedor vendedor) {
         return new ResponseEntity<>(vendedorService.updateVendedor(vendedor), HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "{vendedorId}")
+    public ResponseEntity<String> deleteVendedor(@PathVariable("vendedorId") Integer vendedorId) {
+        return new ResponseEntity<>(vendedorService.deleteVendedor(vendedorId), HttpStatus.OK);
     }
 
 }

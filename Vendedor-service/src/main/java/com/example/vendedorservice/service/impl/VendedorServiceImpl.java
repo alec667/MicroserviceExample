@@ -24,10 +24,10 @@ public class VendedorServiceImpl implements VendedorService {
     public Vendedor getVendedor(Integer vendedorId) {
         Vendedor vendedor;
         Optional<Vendedor> optional = dao.findById(vendedorId);
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             vendedor = optional.get();
             return vendedor;
-        }else {
+        } else {
             throw new VendedorNotFoundException("Vendedor no encontrado");
         }
 
@@ -51,11 +51,11 @@ public class VendedorServiceImpl implements VendedorService {
     public Vendedor updateVendedor(Vendedor vendedor) {
         Vendedor updatedVendedor = new Vendedor();
         Optional<Vendedor> optional = dao.findById(vendedor.getVendedorId());
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             updatedVendedor = optional.get();
             dao.save(updatedVendedor);
             return updatedVendedor;
-        }else {
+        } else {
             createVendedor(vendedor);
             return updatedVendedor;
         }
@@ -63,6 +63,12 @@ public class VendedorServiceImpl implements VendedorService {
 
     @Override
     public String deleteVendedor(Integer vendedorId) {
-        return null;
+        Optional<Vendedor> optional = dao.findById(vendedorId);
+        if (optional.isPresent()) {
+            dao.deleteById(vendedorId);
+            return "Vendedor Id: " + vendedorId + " BORRADO.";
+        } else {
+            return "Vendedor Id: " + vendedorId + " No Existe.";
+        }
     }
 }
