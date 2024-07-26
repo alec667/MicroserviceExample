@@ -49,7 +49,16 @@ public class VendedorServiceImpl implements VendedorService {
 
     @Override
     public Vendedor updateVendedor(Vendedor vendedor) {
-        return null;
+        Vendedor updatedVendedor = new Vendedor();
+        Optional<Vendedor> optional = dao.findById(vendedor.getVendedorId());
+        if (optional.isPresent()){
+            updatedVendedor = optional.get();
+            dao.save(updatedVendedor);
+            return updatedVendedor;
+        }else {
+            createVendedor(vendedor);
+            return updatedVendedor;
+        }
     }
 
     @Override
