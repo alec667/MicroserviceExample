@@ -6,6 +6,7 @@ import com.example.vendedorservice.service.VendedorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VendedorServiceImpl implements VendedorService {
@@ -19,7 +20,15 @@ public class VendedorServiceImpl implements VendedorService {
 
     @Override
     public Vendedor getVendedor(Integer vendedorId) {
-        return null;
+        Vendedor vendedor;
+        Optional<Vendedor> optional = dao.findById(vendedorId);
+        if (optional.isPresent()){
+            vendedor = optional.get();
+            return vendedor;
+        }else {
+            return null;
+        }
+
     }
 
     @Override
