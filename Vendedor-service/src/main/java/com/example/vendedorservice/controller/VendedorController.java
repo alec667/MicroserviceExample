@@ -32,7 +32,7 @@ public class VendedorController {
         return new ResponseEntity<>(vendedorService.getAllVendedor(), HttpStatus.OK);
     }
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @PutMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<Vendedor> updateVendedor(@RequestBody Vendedor vendedor) {
         return new ResponseEntity<>(vendedorService.updateVendedor(vendedor), HttpStatus.OK);
     }

@@ -53,6 +53,8 @@ public class VendedorServiceImpl implements VendedorService {
         Optional<Vendedor> optional = dao.findById(vendedor.getVendedorId());
         if (optional.isPresent()) {
             updatedVendedor = optional.get();
+            updatedVendedor.setVendedorName(vendedor.getVendedorName());
+            updatedVendedor.setVendedorPhone(vendedor.getVendedorPhone());
             dao.save(updatedVendedor);
             return updatedVendedor;
         } else {
