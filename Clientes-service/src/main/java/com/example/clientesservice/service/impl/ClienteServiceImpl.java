@@ -1,6 +1,7 @@
 package com.example.clientesservice.service.impl;
 
 import com.example.clientesservice.dao.ClienteDAO;
+import com.example.clientesservice.exception.ClienteNotFoundException;
 import com.example.clientesservice.model.Cliente;
 import com.example.clientesservice.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,7 @@ public class ClienteServiceImpl implements ClienteService {
             client = optional.get();
             return client;
         } else {
-            //TODO add exception
-            return null;
+            throw new ClienteNotFoundException("Cliente no encontrado");
         }
     }
 
