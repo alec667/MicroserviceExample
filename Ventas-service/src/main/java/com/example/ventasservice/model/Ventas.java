@@ -16,6 +16,6 @@ public class Ventas {
 
     @Id
     private Integer ventaId;
-    private String descripcion;
+    private String producto;
 
 }

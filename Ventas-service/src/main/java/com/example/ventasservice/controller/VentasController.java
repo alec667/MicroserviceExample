@@ -22,7 +22,7 @@ public class VentasController {
     }
 
     @GetMapping(path = "/all", produces = "application/json")
-    public ResponseEntity<List<Ventas>> getAlVentas() {
+    public ResponseEntity<List<Ventas>> getAllVentas() {
         return new ResponseEntity<>(ventasService.getAllVentas(), HttpStatus.OK);
     }
 
@@ -40,4 +40,11 @@ public class VentasController {
     public ResponseEntity<String> deleteVenta(@PathVariable("ventaId") Integer ventaId) {
         return new ResponseEntity<>(ventasService.deleteVenta(ventaId), HttpStatus.OK);
     }
+
+    //feign
+    @GetMapping(path = "producto/{prod}")
+    public ResponseEntity<List<String>> getAllByProduc(@PathVariable("prod") String prod){
+        return new ResponseEntity<>(ventasService.getAllByProducto(prod), HttpStatus.OK);
+    }
+
 }

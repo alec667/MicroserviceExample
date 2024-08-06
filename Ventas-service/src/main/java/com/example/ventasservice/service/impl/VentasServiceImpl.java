@@ -55,7 +55,7 @@ public class VentasServiceImpl implements VentasService {
         Optional<Ventas> optional = dao.findById(ventas.getVentaId());
         if (optional.isPresent()) {
             updatedVenta = optional.get();
-            updatedVenta.setDescripcion(ventas.getDescripcion());
+            updatedVenta.setProducto(ventas.getProducto());
             dao.save(updatedVenta);
             return updatedVenta;
         } else {
@@ -74,5 +74,12 @@ public class VentasServiceImpl implements VentasService {
         } else {
             return "Venta Id: " + ventaId + " No Existe.";
         }
+    }
+
+    @Override
+    public List<String> getAllByProducto(String prod) {
+        List<String> productos = new ArrayList<>();
+        productos = dao.findAllByProducto(prod);
+        return productos;
     }
 }
