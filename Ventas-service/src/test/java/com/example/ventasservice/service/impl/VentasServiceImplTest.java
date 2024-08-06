@@ -31,8 +31,8 @@ class VentasServiceImplTest {
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
         this.ventasService = new VentasServiceImpl(ventasDAO);
-        testVenta1 = new Ventas(1, "test description 1");
-        testVenta2 = new Ventas(2, "test description 2");
+        testVenta1 = new Ventas(1, "product 1");
+        testVenta2 = new Ventas(2, "product 2");
         testList = Arrays.asList(testVenta1, testVenta2);
         ventasDAO.save(testVenta1);
         ventasDAO.save(testVenta2);
@@ -67,7 +67,7 @@ class VentasServiceImplTest {
         mock(Ventas.class);
         mock(VentasDAO.class);
 
-        Ventas nuevaVenta = new Ventas(3, "test description 3");
+        Ventas nuevaVenta = new Ventas(3, "product 1");
 
         when(ventasDAO.save(nuevaVenta)).thenReturn(nuevaVenta);
         assertThat(ventasService.createVenta(nuevaVenta)).isEqualTo("Venta creada");
@@ -79,7 +79,7 @@ class VentasServiceImplTest {
         mock(Ventas.class);
         mock(VentasDAO.class);
 
-        Ventas updatedVenta = new Ventas(1, "test description updated");
+        Ventas updatedVenta = new Ventas(1, "product 2");
 
         when(ventasDAO.save(updatedVenta)).thenReturn(updatedVenta);
         assertThat(ventasService.updateVenta(updatedVenta)).isEqualTo(updatedVenta);
@@ -94,5 +94,16 @@ class VentasServiceImplTest {
 
         doAnswer(Answers.CALLS_REAL_METHODS).when(ventasDAO).deleteById(1);
         assertThat(ventasService.deleteVenta(1)).isEqualTo(response);
+    }
+
+    @Test
+    void getAllByProducto(){
+        mock(Ventas.class);
+        mock(VentasDAO.class);
+
+        List<String> productos = Arrays.asList(testVenta1.getProducto(), testVenta2.getProducto());
+
+        when(ventasDAO.findAllByProducto("product 1")).thenReturn(productos);
+        assertThat(ventasService.getAllByProducto("product 1")).isEqualTo(productos);
     }
 }
