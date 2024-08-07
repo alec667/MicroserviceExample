@@ -7,5 +7,5 @@ public class Cliente {
 
     private Integer clienteId;
     private String clienteName;
-    private String descripcion;
+    private String vendedorAsociadoName;
 }

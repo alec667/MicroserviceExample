@@ -11,4 +11,5 @@ public interface ClienteService {
     String createCliente(Cliente cliente);
     Cliente updateCliente(Cliente cliente);
     String deleteCliente(Integer clienteId);
+    List<Cliente> getByVendedorName(String name);
 }

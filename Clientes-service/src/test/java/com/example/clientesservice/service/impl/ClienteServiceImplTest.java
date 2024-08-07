@@ -24,7 +24,7 @@ class ClienteServiceImplTest {
 
     private ClienteService clienteService;
     AutoCloseable autoCloseable;
-    Cliente testCliente1, testCliente2;
+    Cliente testCliente1, testCliente2, testCliente3, testCliente4;
     List<Cliente> testList;
 
     @BeforeEach
@@ -32,11 +32,15 @@ class ClienteServiceImplTest {
         autoCloseable = MockitoAnnotations.openMocks(this);
         this.clienteService = new ClienteServiceImpl(dao);
 
-        testCliente1 = new Cliente(1, "test name 1", "test description 1");
-        testCliente2 = new Cliente(2, "test name 2", "test description 2");
-        testList = Arrays.asList(testCliente1, testCliente2);
+        testCliente1 = new Cliente(1, "cliente name 1", "vendor 1");
+        testCliente2 = new Cliente(2, "cliente name 2", "vendor 2");
+        testCliente3 = new Cliente(3, "cliente name 3", "vendor 1");
+        testCliente4 = new Cliente(4, "cliente name 4", "vendor 2");
+        testList = Arrays.asList(testCliente1, testCliente2, testCliente3, testCliente4);
         dao.save(testCliente1);
         dao.save(testCliente2);
+        dao.save(testCliente3);
+        dao.save(testCliente4);
     }
 
     @AfterEach
@@ -68,7 +72,7 @@ class ClienteServiceImplTest {
         mock(Cliente.class);
         mock(ClienteDAO.class);
 
-        Cliente nuevoCliente = new Cliente(3, "cliente name 3", "description 3");
+        Cliente nuevoCliente = new Cliente(3, "cliente name 3", "vendor 3");
 
         when(dao.save(nuevoCliente)).thenReturn(nuevoCliente);
         assertThat(clienteService.createCliente(nuevoCliente)).isEqualTo("Cliente creado");
@@ -93,5 +97,16 @@ class ClienteServiceImplTest {
 
         doAnswer(Answers.CALLS_REAL_METHODS).when(dao).deleteById(1);
         assertThat(clienteService.deleteCliente(1)).isEqualTo("Cliente Id: 1 No Existe");
+    }
+
+    @Test
+    void getByClienteName(){
+        mock(Cliente.class);
+        mock(ClienteDAO.class);
+
+        List<Cliente> clientesV1= Arrays.asList(testCliente1, testCliente3);
+
+        when(dao.findByVendedorAsociadoName("vendor 1")).thenReturn(clientesV1);
+        assertThat(clienteService.getByVendedorName("vendor 1")).isEqualTo(clientesV1);
     }
 }

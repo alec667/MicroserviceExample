@@ -40,4 +40,10 @@ public class ClienteController {
     public ResponseEntity<String> deleteCliente(@PathVariable("clienteId") Integer clienteId) {
         return new ResponseEntity<>(service.deleteCliente(clienteId), HttpStatus.OK);
     }
+
+    @GetMapping(path = "vendedor/{vName}")
+    public ResponseEntity<List<Cliente>> getByVendedorName(@PathVariable("vName") String name){
+        return new ResponseEntity<>(service.getByVendedorName(name), HttpStatus.OK);
+    }
+
 }

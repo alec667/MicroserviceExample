@@ -41,7 +41,7 @@ class ClienteControllerTest {
     private ClienteController clienteController;
 
     AutoCloseable autoCloseable;
-    Cliente testCliente1, testCliente2;
+    Cliente testCliente1, testCliente2, testCliente3, testCliente4;
     List<Cliente> testList;
     ObjectMapper objectMapper = new ObjectMapper();
     ObjectWriter objectWriter = objectMapper.writer();
@@ -51,9 +51,11 @@ class ClienteControllerTest {
         autoCloseable = MockitoAnnotations.openMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(clienteController).build();
 
-        testCliente1 = new Cliente(1, "test name 1", "test description 1");
-        testCliente2 = new Cliente(2, "test name 2", "test description 2");
-        testList = Arrays.asList(testCliente1, testCliente2);
+        testCliente1 = new Cliente(1, "test name 1", "vendor 1");
+        testCliente2 = new Cliente(2, "test name 2", "vendor 2");
+        testCliente3 = new Cliente(3, "test name 3", "vendor 1");
+        testCliente4 = new Cliente(4, "test name 4", "vendor 2");
+        testList = Arrays.asList(testCliente1, testCliente2, testCliente3, testCliente4);
     }
 
     @AfterEach
@@ -87,12 +89,12 @@ class ClienteControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$[0].clienteName", is("test name 1")))
-                .andExpect(jsonPath("$[1].descripcion", is("test description 2")));
+                .andExpect(jsonPath("$[1].vendedorAsociadoName", is("vendor 2")));
     }
 
     @Test
     void createCliente() throws Exception {
-        Cliente nuevoCliente = new Cliente(3, "cliente name 3", "description 3");
+        Cliente nuevoCliente = new Cliente(3, "test name 3", "vendor 3");
         String content = objectWriter.writeValueAsString(nuevoCliente);
 
         when(clienteService.createCliente(nuevoCliente)).thenReturn("Cliente creado");
@@ -110,7 +112,7 @@ class ClienteControllerTest {
 
     @Test
     void updateCliente() throws Exception {
-        Cliente updatedCliente = new Cliente(1, "cliente name 1", "description 1 (updated)");
+        Cliente updatedCliente = new Cliente(1, "test name 1", "vendor 3 (updated)");
         String content = objectWriter.writeValueAsString(updatedCliente);
 
         when(clienteService.updateCliente(updatedCliente)).thenReturn(updatedCliente);
@@ -123,7 +125,7 @@ class ClienteControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$.descripcion", is("description 1 (updated)")));
+                .andExpect(jsonPath("$.vendedorAsociadoName", is("vendor 3 (updated)")));
     }
 
     @Test
@@ -136,5 +138,21 @@ class ClienteControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(result -> assertThat(result.getResponse().getContentAsString()).isEqualTo("Cliente Id: 1 BORRADO."));
+    }
+
+    @Test
+    void getClienteByName() throws Exception {
+        List<Cliente> clientesV1 = Arrays.asList(testCliente1, testCliente3);
+        when(clienteService.getByVendedorName("vendor 1")).thenReturn(clientesV1);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.
+                get("/clientes/vendedor/vendor 1")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request).andExpect(status().isOk())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$[0].clienteName", is("test name 1")));
+
+
     }
 }

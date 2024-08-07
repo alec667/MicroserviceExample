@@ -4,7 +4,6 @@ import com.example.clientesservice.dao.ClienteDAO;
 import com.example.clientesservice.exception.ClienteNotFoundException;
 import com.example.clientesservice.model.Cliente;
 import com.example.clientesservice.service.ClienteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class ClienteServiceImpl implements ClienteService {
         if (optional.isPresent()) {
             updatedClient = optional.get();
             updatedClient.setClienteName(cliente.getClienteName());
-            updatedClient.setDescripcion(cliente.getDescripcion());
+            updatedClient.setVendedorAsociadoName(cliente.getVendedorAsociadoName());
 
             dao.save(updatedClient);
             return updatedClient;
@@ -78,4 +77,11 @@ public class ClienteServiceImpl implements ClienteService {
             return "Cliente Id: " + clienteId + " BORRADO.";
         }
     }
+
+    @Override
+    public List<Cliente> getByVendedorName(String name) {
+        return dao.findByVendedorAsociadoName(name);
+    }
+
+
 }
