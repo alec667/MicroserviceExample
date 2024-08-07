@@ -31,10 +31,10 @@ class VentasServiceImplTest {
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
         this.ventasService = new VentasServiceImpl(ventasDAO);
-        testVenta1 = new Ventas(1, "product 1");
-        testVenta2 = new Ventas(2, "product 2");
-        testVenta3 = new Ventas(3, "product 1");
-        testVenta4 = new Ventas(4, "product 2");
+        testVenta1 = new Ventas(1,1 , "product 1");
+        testVenta2 = new Ventas(2,1, "product 2");
+        testVenta3 = new Ventas(3, 1,"product 1");
+        testVenta4 = new Ventas(4, 2,"product 2");
         ventasDAO.save(testVenta1);
         ventasDAO.save(testVenta2);
         ventasDAO.save(testVenta3);
@@ -72,7 +72,7 @@ class VentasServiceImplTest {
         mock(Ventas.class);
         mock(VentasDAO.class);
 
-        Ventas nuevaVenta = new Ventas(5, "product 1");
+        Ventas nuevaVenta = new Ventas(5,2, "product 1");
 
         when(ventasDAO.save(nuevaVenta)).thenReturn(nuevaVenta);
         assertThat(ventasService.createVenta(nuevaVenta)).isEqualTo("Venta creada");
@@ -84,7 +84,7 @@ class VentasServiceImplTest {
         mock(Ventas.class);
         mock(VentasDAO.class);
 
-        Ventas updatedVenta = new Ventas(1, "product 2");
+        Ventas updatedVenta = new Ventas(1,1, "product 2");
 
         when(ventasDAO.save(updatedVenta)).thenReturn(updatedVenta);
         assertThat(ventasService.updateVenta(updatedVenta)).isEqualTo(updatedVenta);
@@ -102,13 +102,13 @@ class VentasServiceImplTest {
     }
 
     @Test
-    void getAllByProducto() {
+    void getAllByVendedor() {
         mock(Ventas.class);
         mock(VentasDAO.class);
 
-        List<Ventas> productos = Arrays.asList(testVenta1, testVenta3);
+        List<Ventas> vendedores = Arrays.asList(testVenta1, testVenta2, testVenta3);
 
-        when(ventasDAO.findAllByProducto("product 1")).thenReturn(productos);
-        assertThat(ventasService.getAllByProducto("product 1")).isEqualTo(productos);
+        when(ventasDAO.findAllByVendedorId(1)).thenReturn(vendedores);
+        assertThat(ventasService.getAllByVendedor(1)).isEqualTo(vendedores);
     }
 }

@@ -42,9 +42,9 @@ public class VentasController {
     }
 
     //feign
-    @GetMapping(path = "producto/{prod}")
-    public ResponseEntity<List<Ventas>> getAllByProduct(@PathVariable("prod") String prod){
-        return new ResponseEntity<>(ventasService.getAllByProducto(prod), HttpStatus.OK);
+    @GetMapping(path = "/vendedor/{vendedorId}")
+    public ResponseEntity<List<Ventas>> getAllByVendedor(@PathVariable("vendedorId") Integer vendedorId){
+        return new ResponseEntity<>(ventasService.getAllByVendedor(vendedorId), HttpStatus.OK);
     }
 
 }

@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Service
 public class VendedorServiceImpl implements VendedorService {
-
     final
     VendedorDAO dao;
 

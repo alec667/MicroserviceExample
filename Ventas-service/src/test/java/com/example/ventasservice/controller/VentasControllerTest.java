@@ -52,10 +52,10 @@ class VentasControllerTest {
         autoCloseable = MockitoAnnotations.openMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(ventasController).build();
 
-        testVenta1 = new Ventas(1, "product 1");
-        testVenta2 = new Ventas(2, "product 2");
-        testVenta3 = new Ventas(3, "product 1");
-        testVenta4 = new Ventas(4, "product 2");
+        testVenta1 = new Ventas(1,1, "product 1");
+        testVenta2 = new Ventas(2, 1,"product 2");
+        testVenta3 = new Ventas(3,1, "product 1");
+        testVenta4 = new Ventas(4,2, "product 2");
         testList = Arrays.asList(testVenta1, testVenta2);
     }
 
@@ -95,7 +95,7 @@ class VentasControllerTest {
 
     @Test
     void createVenta() throws Exception {
-        Ventas nuevaVenta = new Ventas(5, "product 3");
+        Ventas nuevaVenta = new Ventas(5,2, "product 3");
         String content = objectWriter.writeValueAsString(nuevaVenta);
 
         when(ventasService.createVenta(nuevaVenta)).thenReturn("Venta creada");
@@ -113,7 +113,7 @@ class VentasControllerTest {
 
     @Test
     void updateVenta() throws Exception {
-        Ventas updatedVenta = new Ventas(1, "product 2");
+        Ventas updatedVenta = new Ventas(1,1, "product 2");
         String content = objectMapper.writeValueAsString(updatedVenta);
 
         when(ventasService.updateVenta(updatedVenta)).thenReturn(updatedVenta);
@@ -140,5 +140,17 @@ class VentasControllerTest {
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
                 .andExpect(result -> assertThat(result.getResponse().getContentAsString()).isEqualTo("Venta Id: 1 BORRADA."));
+    }
+
+    @Test
+    void getAllByVendedor() throws Exception {
+        List<Ventas> vendedores = Arrays.asList(testVenta1, testVenta2, testVenta3);
+        when(ventasService.getAllByVendedor(1)).thenReturn(vendedores);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/ventas/vendedor/1").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", notNullValue()));
     }
 }

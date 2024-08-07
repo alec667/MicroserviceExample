@@ -22,10 +22,10 @@ class VentasDAOTest {
 
     @BeforeEach
     void setUp() {
-        testVenta1 = new Ventas(1, "product 1");
-        testVenta2 = new Ventas(2, "product 2");
-        testVenta3 = new Ventas(3, "product 1");
-        testVenta4 = new Ventas(4, "product 2");
+        testVenta1 = new Ventas(1, 1,"product 1");
+        testVenta2 = new Ventas(2,1, "product 2");
+        testVenta3 = new Ventas(3, 1,"product 1");
+        testVenta4 = new Ventas(4,2, "product 2");
         dao.save(testVenta1);
         dao.save(testVenta2);
         dao.save(testVenta3);
@@ -42,10 +42,10 @@ class VentasDAOTest {
     }
 
     @Test
-    void findAllByProducto() {
-        testList = dao.findAllByProducto("product 1");
+    void findAllByVendedorId() {
+        testList = dao.findAllByVendedorId(1);
 
         assertThat(testList.get(0).getVentaId()).isEqualTo(1);
-        assertThat(testList.get(1).getVentaId()).isEqualTo(3);
+        assertThat(testList.get(1).getVentaId()).isEqualTo(2);
     }
 }

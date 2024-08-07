@@ -6,5 +6,7 @@ import lombok.Data;
 public class Ventas {
 
     private Integer ventaId;
-    private String descripcion;
+    private Integer vendedorId;
+    private String producto;
+
 }
