@@ -11,5 +11,5 @@ public interface VentasService {
     String createVenta(Ventas ventas);
     Ventas updateVenta(Ventas ventas);
     String deleteVenta(Integer ventaId);
-    List<Ventas> getAllByVendedor(Integer vendedorId);
+    List<String> getAllByVendedor(Integer vendedorId);
 }

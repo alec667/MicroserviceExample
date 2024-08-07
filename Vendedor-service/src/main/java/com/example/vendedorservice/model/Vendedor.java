@@ -21,10 +21,10 @@ public class Vendedor {
     private Integer vendedorId;
     private String vendedorName;
     private String vendedorPhone;
-/*
+
     @ElementCollection
     List<String> ventasDescripcion;
-
+/*
     @ElementCollection
     List<String> clientesDescripcion;
     */

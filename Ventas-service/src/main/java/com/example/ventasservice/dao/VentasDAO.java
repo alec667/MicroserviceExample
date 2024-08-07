@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface VentasDAO extends JpaRepository<Ventas, Integer> {
 
-    List<Ventas> findAllByVendedorId(Integer vendedorId);
+    List<Ventas> findByVendedorId(Integer vendedorId);
 }

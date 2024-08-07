@@ -108,7 +108,7 @@ class VentasServiceImplTest {
 
         List<Ventas> vendedores = Arrays.asList(testVenta1, testVenta2, testVenta3);
 
-        when(ventasDAO.findAllByVendedorId(1)).thenReturn(vendedores);
+        when(ventasDAO.findByVendedorId(1)).thenReturn(vendedores);
         assertThat(ventasService.getAllByVendedor(1)).isEqualTo(vendedores);
     }
 }

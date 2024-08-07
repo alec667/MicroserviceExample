@@ -43,7 +43,7 @@ class VentasDAOTest {
 
     @Test
     void findAllByVendedorId() {
-        testList = dao.findAllByVendedorId(1);
+        testList = dao.findByVendedorId(1);
 
         assertThat(testList.get(0).getVentaId()).isEqualTo(1);
         assertThat(testList.get(1).getVentaId()).isEqualTo(2);
