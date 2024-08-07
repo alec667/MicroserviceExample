@@ -43,7 +43,7 @@ public class VentasController {
 
     //feign
     @GetMapping(path = "producto/{prod}")
-    public ResponseEntity<List<String>> getAllByProduc(@PathVariable("prod") String prod){
+    public ResponseEntity<List<Ventas>> getAllByProduct(@PathVariable("prod") String prod){
         return new ResponseEntity<>(ventasService.getAllByProducto(prod), HttpStatus.OK);
     }
 

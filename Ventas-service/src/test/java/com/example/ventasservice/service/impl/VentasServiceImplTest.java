@@ -24,7 +24,7 @@ class VentasServiceImplTest {
 
     private VentasService ventasService;
     AutoCloseable autoCloseable;
-    Ventas testVenta1, testVenta2;
+    Ventas testVenta1, testVenta2, testVenta3, testVenta4;
     List<Ventas> testList;
 
     @BeforeEach
@@ -33,9 +33,14 @@ class VentasServiceImplTest {
         this.ventasService = new VentasServiceImpl(ventasDAO);
         testVenta1 = new Ventas(1, "product 1");
         testVenta2 = new Ventas(2, "product 2");
-        testList = Arrays.asList(testVenta1, testVenta2);
+        testVenta3 = new Ventas(3, "product 1");
+        testVenta4 = new Ventas(4, "product 2");
         ventasDAO.save(testVenta1);
         ventasDAO.save(testVenta2);
+        ventasDAO.save(testVenta3);
+        ventasDAO.save(testVenta4);
+        testList = Arrays.asList(testVenta1, testVenta2, testVenta3, testVenta4);
+
     }
 
     @AfterEach
@@ -67,7 +72,7 @@ class VentasServiceImplTest {
         mock(Ventas.class);
         mock(VentasDAO.class);
 
-        Ventas nuevaVenta = new Ventas(3, "product 1");
+        Ventas nuevaVenta = new Ventas(5, "product 1");
 
         when(ventasDAO.save(nuevaVenta)).thenReturn(nuevaVenta);
         assertThat(ventasService.createVenta(nuevaVenta)).isEqualTo("Venta creada");
@@ -97,11 +102,11 @@ class VentasServiceImplTest {
     }
 
     @Test
-    void getAllByProducto(){
+    void getAllByProducto() {
         mock(Ventas.class);
         mock(VentasDAO.class);
 
-        List<String> productos = Arrays.asList(testVenta1.getProducto(), testVenta2.getProducto());
+        List<Ventas> productos = Arrays.asList(testVenta1, testVenta3);
 
         when(ventasDAO.findAllByProducto("product 1")).thenReturn(productos);
         assertThat(ventasService.getAllByProducto("product 1")).isEqualTo(productos);

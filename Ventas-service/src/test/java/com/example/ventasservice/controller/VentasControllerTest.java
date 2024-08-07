@@ -42,7 +42,7 @@ class VentasControllerTest {
     VentasController ventasController;
 
     private AutoCloseable autoCloseable;
-    Ventas testVenta1, testVenta2;
+    Ventas testVenta1, testVenta2, testVenta3, testVenta4;
     List<Ventas> testList;
     ObjectMapper objectMapper = new ObjectMapper();
     ObjectWriter objectWriter = objectMapper.writer();
@@ -52,8 +52,10 @@ class VentasControllerTest {
         autoCloseable = MockitoAnnotations.openMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(ventasController).build();
 
-        testVenta1 = new Ventas(1, "test description 1");
-        testVenta2 = new Ventas(2, "test description 2");
+        testVenta1 = new Ventas(1, "product 1");
+        testVenta2 = new Ventas(2, "product 2");
+        testVenta3 = new Ventas(3, "product 1");
+        testVenta4 = new Ventas(4, "product 2");
         testList = Arrays.asList(testVenta1, testVenta2);
     }
 
@@ -73,11 +75,11 @@ class VentasControllerTest {
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$.descripcion", Matchers.is("test description 1")));
+                .andExpect(jsonPath("$.producto", Matchers.is("product 1")));
     }
 
     @Test
-    void getAlVentas() throws Exception {
+    void getAllVentas() throws Exception {
         when(ventasService.getAllVentas()).thenReturn(testList);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
@@ -87,13 +89,13 @@ class VentasControllerTest {
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$[0].descripcion", is("test description 1")))
-                .andExpect(jsonPath("$[1].descripcion", is("test description 2")));
+                .andExpect(jsonPath("$[0].producto", is("product 1")))
+                .andExpect(jsonPath("$[1].producto", is("product 2")));
     }
 
     @Test
     void createVenta() throws Exception {
-        Ventas nuevaVenta = new Ventas(3, "test description 3");
+        Ventas nuevaVenta = new Ventas(5, "product 3");
         String content = objectWriter.writeValueAsString(nuevaVenta);
 
         when(ventasService.createVenta(nuevaVenta)).thenReturn("Venta creada");
@@ -111,7 +113,7 @@ class VentasControllerTest {
 
     @Test
     void updateVenta() throws Exception {
-        Ventas updatedVenta = new Ventas(1, "test description updated");
+        Ventas updatedVenta = new Ventas(1, "product 2");
         String content = objectMapper.writeValueAsString(updatedVenta);
 
         when(ventasService.updateVenta(updatedVenta)).thenReturn(updatedVenta);
@@ -124,7 +126,7 @@ class VentasControllerTest {
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$.descripcion", is("test description updated")));
+                .andExpect(jsonPath("$.producto", is("product 2")));
     }
 
     @Test
