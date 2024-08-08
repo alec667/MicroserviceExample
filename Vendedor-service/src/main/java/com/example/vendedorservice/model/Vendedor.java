@@ -24,9 +24,8 @@ public class Vendedor {
 
     @ElementCollection
     List<String> ventasDescripcion;
-/*
+
     @ElementCollection
-    List<String> clientesDescripcion;
-    */
+    List<String> clientes;
 
 }

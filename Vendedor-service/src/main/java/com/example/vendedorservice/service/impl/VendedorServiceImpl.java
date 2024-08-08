@@ -2,6 +2,7 @@ package com.example.vendedorservice.service.impl;
 
 import com.example.vendedorservice.dao.VendedorDAO;
 import com.example.vendedorservice.exception.VendedorNotFoundException;
+import com.example.vendedorservice.feign.ClienteInterface;
 import com.example.vendedorservice.feign.VentasInterface;
 import com.example.vendedorservice.model.Vendedor;
 import com.example.vendedorservice.service.VendedorService;
@@ -13,26 +14,29 @@ import java.util.Optional;
 
 @Service
 public class VendedorServiceImpl implements VendedorService {
-
+    final
+    ClienteInterface clienteInterface;
     final
     VentasInterface ventasInterface;
     final
     VendedorDAO dao;
 
-    public VendedorServiceImpl(VendedorDAO dao, VentasInterface ventasInterface) {
+    public VendedorServiceImpl(VendedorDAO dao, VentasInterface ventasInterface, ClienteInterface clienteInterface) {
         this.dao = dao;
         this.ventasInterface = ventasInterface;
+        this.clienteInterface = clienteInterface;
     }
 
     @Override
     public Vendedor getVendedor(Integer vendedorId) {
         Vendedor vendedor;
         Optional<Vendedor> optional = dao.findById(vendedorId);
-        List<String> ventasDesc = ventasInterface.getAllByVendedor(vendedorId).getBody();
-
         if (optional.isPresent()) {
             vendedor = optional.get();
+            List<String> ventasDesc = ventasInterface.getAllByVendedor(vendedorId).getBody();
+            List<String> clientesNames = clienteInterface.getByVendedorName(vendedor.getVendedorName()).getBody();
             vendedor.setVentasDescripcion(ventasDesc);
+            vendedor.setClientes(clientesNames);
             return vendedor;
         } else {
             throw new VendedorNotFoundException("Vendedor no encontrado");

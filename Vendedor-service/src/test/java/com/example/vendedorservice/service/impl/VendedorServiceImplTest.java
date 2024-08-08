@@ -1,6 +1,7 @@
 package com.example.vendedorservice.service.impl;
 
 import com.example.vendedorservice.dao.VendedorDAO;
+import com.example.vendedorservice.feign.ClienteInterface;
 import com.example.vendedorservice.feign.VentasInterface;
 import com.example.vendedorservice.model.Vendedor;
 import com.example.vendedorservice.service.VendedorService;
@@ -27,19 +28,23 @@ class VendedorServiceImplTest {
     @Mock
     private VentasInterface ventasInterface;
 
+    @Mock
+    ClienteInterface clienteInterface;
+
     private VendedorService vendedorService;
     AutoCloseable autoCloseable;
     Vendedor testVendedor1, testVendedor2;
     List<Vendedor> testList;
-    List<String> ventasDesc;
+    List<String> ventasDesc, clientes;
 
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        this.vendedorService = new VendedorServiceImpl(dao, ventasInterface);
+        this.vendedorService = new VendedorServiceImpl(dao, ventasInterface, clienteInterface);
 
         ventasDesc = Arrays.asList("product 1", "product 2", "product 3");
-        testVendedor1 = new Vendedor(1, "name1", "phone 1", ventasDesc);
+        clientes = Arrays.asList("client 1", "client 2");
+        testVendedor1 = new Vendedor(1, "name1", "phone 1", ventasDesc, clientes);
         dao.save(testVendedor1);
 
     }
