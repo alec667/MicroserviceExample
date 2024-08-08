@@ -105,8 +105,9 @@ class ClienteServiceImplTest {
         mock(ClienteDAO.class);
 
         List<Cliente> clientesV1= Arrays.asList(testCliente1, testCliente3);
+        List<String> vendedorNames = Arrays.asList(testCliente1.getVendedorAsociadoName(), testCliente3.getVendedorAsociadoName());
 
         when(dao.findByVendedorAsociadoName("vendor 1")).thenReturn(clientesV1);
-        assertThat(clienteService.getByVendedorName("vendor 1")).isEqualTo(clientesV1);
+        assertThat(clienteService.getByVendedorName("vendor 1")).isEqualTo(vendedorNames);
     }
 }

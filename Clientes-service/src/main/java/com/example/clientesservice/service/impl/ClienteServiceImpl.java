@@ -79,8 +79,13 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public List<Cliente> getByVendedorName(String name) {
-        return dao.findByVendedorAsociadoName(name);
+    public List<String> getByVendedorName(String name) {
+        List<String> vendedor = new ArrayList<>();
+        List<Cliente> clientes = dao.findByVendedorAsociadoName(name);
+        for (Cliente c: clientes) {
+            vendedor.add(c.getVendedorAsociadoName());
+        }
+        return vendedor;
     }
 
 

@@ -142,7 +142,7 @@ class ClienteControllerTest {
 
     @Test
     void getClienteByName() throws Exception {
-        List<Cliente> clientesV1 = Arrays.asList(testCliente1, testCliente3);
+        List<String> clientesV1 = Arrays.asList(testCliente1.getVendedorAsociadoName(), testCliente3.getVendedorAsociadoName());
         when(clienteService.getByVendedorName("vendor 1")).thenReturn(clientesV1);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.
@@ -151,7 +151,7 @@ class ClienteControllerTest {
 
         mockMvc.perform(request).andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$[0].clienteName", is("test name 1")));
+                .andExpect(jsonPath("$[0]", is("vendor 1")));
 
 
     }

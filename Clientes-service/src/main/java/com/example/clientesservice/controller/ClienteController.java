@@ -42,7 +42,7 @@ public class ClienteController {
     }
 
     @GetMapping(path = "vendedor/{vName}")
-    public ResponseEntity<List<Cliente>> getByVendedorName(@PathVariable("vName") String name){
+    public ResponseEntity<List<String>> getByVendedorName(@PathVariable("vName") String name){
         return new ResponseEntity<>(service.getByVendedorName(name), HttpStatus.OK);
     }
 
