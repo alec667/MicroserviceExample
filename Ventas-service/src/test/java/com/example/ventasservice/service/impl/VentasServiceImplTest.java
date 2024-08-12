@@ -106,9 +106,10 @@ class VentasServiceImplTest {
         mock(Ventas.class);
         mock(VentasDAO.class);
 
-        List<Ventas> vendedores = Arrays.asList(testVenta1, testVenta2, testVenta3);
+        List<Ventas> ventas = Arrays.asList(testVenta1, testVenta3);
+        List<String> product = Arrays.asList(testVenta1.getProducto(),  testVenta3.getProducto());
 
-        when(ventasDAO.findByVendedorId(1)).thenReturn(vendedores);
-        assertThat(ventasService.getAllByVendedor(1)).isEqualTo(vendedores);
+        when(ventasDAO.findByVendedorId(1)).thenReturn(ventas);
+        assertThat(ventasService.getAllByVendedor(1)).isEqualTo(product);
     }
 }
