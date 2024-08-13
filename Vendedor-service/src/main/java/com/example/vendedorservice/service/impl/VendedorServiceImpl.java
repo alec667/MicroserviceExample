@@ -48,8 +48,11 @@ public class VendedorServiceImpl implements VendedorService {
     public List<Vendedor> getAllVendedor() {
         List<Vendedor> vendedorList = new ArrayList<>();
         vendedorList = dao.findAll();
+        for (Vendedor v: vendedorList) {
+            v.setVentasDescripcion(ventasInterface.getAllByVendedor(v.getVendedorId()).getBody());
+            v.setClientes(clienteInterface.getByVendedorName(v.getVendedorName()).getBody());
+        }
         return vendedorList;
-
     }
 
     @Override
