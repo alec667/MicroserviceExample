@@ -79,7 +79,6 @@ public class VentasServiceImpl implements VentasService {
     @Override
     public List<String> getAllByVendedor(Integer vendedorId) {
         List<String> productos = new ArrayList<>();
-        //TODO this
         List<Ventas> ventasByVendedor = dao.findByVendedorId(vendedorId);
         for (Ventas v: ventasByVendedor) {
             productos.add(v.getProducto());

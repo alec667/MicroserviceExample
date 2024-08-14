@@ -144,13 +144,15 @@ class VentasControllerTest {
 
     @Test
     void getAllByVendedor() throws Exception {
-        /*List<Ventas> vendedores = Arrays.asList(testVenta1, testVenta2, testVenta3);
-        when(ventasService.getAllByVendedor(1)).thenReturn(vendedores);
+        List<String> productos = Arrays.asList(testVenta1.getProducto(), testVenta2.getProducto(), testVenta3.getProducto());
+        when(ventasService.getAllByVendedor(1)).thenReturn(productos);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/ventas/vendedor/1").contentType(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/ventas/vendedor/1")
+                .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", notNullValue()));*/
+                .andExpect(jsonPath("$", notNullValue()));
     }
 }
