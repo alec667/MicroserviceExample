@@ -48,7 +48,7 @@ public class VendedorServiceImpl implements VendedorService {
     public List<Vendedor> getAllVendedor() {
         List<Vendedor> vendedorList = new ArrayList<>();
         vendedorList = dao.findAll();
-        for (Vendedor v: vendedorList) {
+        for (Vendedor v : vendedorList) {
             v.setVentasDescripcion(ventasInterface.getAllByVendedor(v.getVendedorId()).getBody());
             v.setClientes(clienteInterface.getByVendedorName(v.getVendedorName()).getBody());
         }
@@ -57,8 +57,16 @@ public class VendedorServiceImpl implements VendedorService {
 
     @Override
     public String createVendedor(Vendedor vendedor) {
-        dao.save(vendedor);
-        return "Vendedor creado";
+        try {
+            Vendedor nuevoVendedor = new Vendedor();
+            nuevoVendedor.setVendedorId(vendedor.getVendedorId());
+            nuevoVendedor.setVendedorName(vendedor.getVendedorName());
+            nuevoVendedor.setVendedorPhone(vendedor.getVendedorPhone());
+            dao.save(vendedor);
+            return "Vendedor creado";
+        } catch (NullPointerException e) {
+            return "Vendedor no puede ser null";
+        }
     }
 
     @Override
@@ -73,7 +81,7 @@ public class VendedorServiceImpl implements VendedorService {
             return updatedVendedor;
         } else {
             createVendedor(vendedor);
-            return updatedVendedor;
+            return vendedor;
         }
     }
 
