@@ -1,0 +1,152 @@
+version: '3.8'
+services:
+  service-registry-container:
+    image: service-registry:latest
+    ports:
+      - 8761:8761
+    networks:
+      - microservices-network
+    restart: on-failure
+    environment:
+      - server.port=8761
+      - eureka.instance.hostname=service-registry-container
+      - eureka.client.service-url.defaultZone=http://service-registry-container:8761/eureka/
+  api-gateway:
+    image: api-gateway:latest
+    ports:
+      - 8765:8765
+    networks:
+      - microservices-network
+    restart: on-failure
+    environment:
+      - server.port=8765
+      - eureka.instance.hostname=service-registry-container
+      - eureka.client.service-url.defaultZone=http://service-registry-container:8761/eureka/
+      - eureka.host=service-registry-container
+    links:
+      - cilentes-service-container
+      - ventas-service-container
+      - vendedor-service-container
+  mysql-clientes-container:
+    image: mysql:8.0.34
+    ports:
+      - 3306:3306
+    networks:
+      - microservices-network
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=cliente_ms_rest
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3306"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - clientes-data:/var/lib/mysql
+  cilentes-service-container:
+    image: clientes-service:latest
+    ports:
+      - 8081:8081
+    networks:
+      - microservices-network
+    restart: on-failure
+    depends_on:
+      service-registry-container:
+        condition: service_started
+      mysql-clientes-container:
+        condition: service_healthy
+    environment:
+      - server.port=8081
+      - eureka.client.service-url.defaultZone=http://service-registry-container:8761/eureka/
+      - eureka.client.enabled=true
+      - eureka.host=service-registry-container
+      - eureka.instance.preferIpAddress=true
+    links:
+      - mysql-clientes-container
+      - vendedor-service-container
+      - service-registry-container
+  mysql-ventas-container:
+    image: mysql:8.0.34
+    ports:
+      - 3307:3306
+    networks:
+      - microservices-network
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=ventas_ms_rest
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3306"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - ventas-data:/var/lib/mysql
+  ventas-service-container:
+    image: ventas-service:latest
+    ports:
+    - 8082:8082
+    networks:
+      - microservices-network
+    restart: on-failure
+    depends_on:
+      service-registry-container:
+        condition: service_started
+      mysql-ventas-container:
+        condition: service_healthy
+    environment:
+      - server.port=8082
+      - eureka.client.service-url.defaultZone=http://service-registry-container:8761/eureka/
+      - eureka.client.enabled=true
+      - eureka.host=service-registry-container
+      - eureka.instance.preferIpAddress=true
+    links:
+      - mysql-ventas-container
+      - vendedor-service-container
+      - service-registry-container
+  mysql-vendedor-container:
+    image: mysql:8.0.34
+    ports:
+      - 3308:3306
+    networks:
+      - microservices-network
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=vendedor_ms_rest
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3306"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - vendedor-data:/var/lib/mysql
+  vendedor-service-container:
+    image: vendedor-service:latest
+    ports:
+      - 8080:8080
+    networks:
+      - microservices-network
+    restart: on-failure
+    depends_on:
+      service-registry-container:
+        condition: service_started
+      mysql-vendedor-container:
+        condition: service_healthy
+    environment:
+      - server.port=8080
+      - eureka.client.service-url.defaultZone=http://service-registry-container:8761/eureka/
+      - eureka.client.enabled=true
+      - eureka.host=service-registry-container
+      - eureka.instance.preferIpAddress=true
+    links:
+      - mysql-vendedor-container
+      - service-registry-container
+networks:
+  microservices-network:
+    driver: bridge
+volumes:
+  ventas-data:
+    driver: local
+  clientes-data:
+    driver: local
+  vendedor-data:
+    driver: local
