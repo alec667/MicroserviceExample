@@ -9,9 +9,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class ClienteDAOTest {
@@ -29,10 +29,10 @@ class ClienteDAOTest {
         testCliente3 = new Cliente(3, "test name 3", "vendor 1");
         testCliente4 = new Cliente(4, "test name 4", "vendor 2");
 
-        clienteDAO.save(testCliente1);
-        clienteDAO.save(testCliente2);
-        clienteDAO.save(testCliente3);
-        clienteDAO.save(testCliente4);
+        clienteDAO.save(Objects.requireNonNull(testCliente1));
+        clienteDAO.save(Objects.requireNonNull(testCliente2));
+        clienteDAO.save(Objects.requireNonNull(testCliente3));
+        clienteDAO.save(Objects.requireNonNull(testCliente4));
     }
 
     @AfterEach
@@ -46,8 +46,8 @@ class ClienteDAOTest {
 
     @Test
     void findByClienteName() {
-        testList1 = Arrays.asList(testCliente1,  testCliente3);
-        testList2 = Arrays.asList(testCliente2,  testCliente4);
+        testList1 = Arrays.asList(testCliente1, testCliente3);
+        testList2 = Arrays.asList(testCliente2, testCliente4);
 
         assertThat(clienteDAO.findByVendedorAsociadoName("vendor 1")).isEqualTo(testList1);
         assertThat(clienteDAO.findByVendedorAsociadoName("vendor 2")).isEqualTo(testList2);
