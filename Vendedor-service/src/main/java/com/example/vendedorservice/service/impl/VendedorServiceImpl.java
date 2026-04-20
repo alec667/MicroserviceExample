@@ -6,20 +6,20 @@ import com.example.vendedorservice.feign.ClienteInterface;
 import com.example.vendedorservice.feign.VentasInterface;
 import com.example.vendedorservice.model.Vendedor;
 import com.example.vendedorservice.service.VendedorService;
+
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class VendedorServiceImpl implements VendedorService {
-    final
-    ClienteInterface clienteInterface;
-    final
-    VentasInterface ventasInterface;
-    final
-    VendedorDAO dao;
+    final ClienteInterface clienteInterface;
+    final VentasInterface ventasInterface;
+    final VendedorDAO dao;
 
     public VendedorServiceImpl(VendedorDAO dao, VentasInterface ventasInterface, ClienteInterface clienteInterface) {
         this.dao = dao;
@@ -28,7 +28,7 @@ public class VendedorServiceImpl implements VendedorService {
     }
 
     @Override
-    public Vendedor getVendedor(Integer vendedorId) {
+    public Vendedor getVendedor(@NonNull Integer vendedorId) {
         Vendedor vendedor;
         Optional<Vendedor> optional = dao.findById(vendedorId);
         if (optional.isPresent()) {
@@ -56,7 +56,7 @@ public class VendedorServiceImpl implements VendedorService {
     }
 
     @Override
-    public String createVendedor(Vendedor vendedor) {
+    public String createVendedor(@NonNull Vendedor vendedor) {
         try {
             Vendedor nuevoVendedor = new Vendedor();
             nuevoVendedor.setVendedorId(vendedor.getVendedorId());
@@ -70,9 +70,9 @@ public class VendedorServiceImpl implements VendedorService {
     }
 
     @Override
-    public Vendedor updateVendedor(Vendedor vendedor) {
+    public Vendedor updateVendedor(@NonNull Vendedor vendedor) {
         Vendedor updatedVendedor = new Vendedor();
-        Optional<Vendedor> optional = dao.findById(vendedor.getVendedorId());
+        Optional<Vendedor> optional = dao.findById(Objects.requireNonNull(vendedor.getVendedorId()));
         if (optional.isPresent()) {
             updatedVendedor = optional.get();
             updatedVendedor.setVendedorName(vendedor.getVendedorName());
@@ -86,7 +86,7 @@ public class VendedorServiceImpl implements VendedorService {
     }
 
     @Override
-    public String deleteVendedor(Integer vendedorId) {
+    public String deleteVendedor(@NonNull Integer vendedorId) {
         Optional<Vendedor> optional = dao.findById(vendedorId);
         if (optional.isPresent()) {
             dao.deleteById(vendedorId);

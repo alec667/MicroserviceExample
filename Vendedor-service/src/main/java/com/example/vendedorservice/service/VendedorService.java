@@ -4,13 +4,18 @@ import com.example.vendedorservice.model.Vendedor;
 
 import java.util.List;
 
+import org.springframework.lang.NonNull;
+
 public interface VendedorService {
 
-    Vendedor getVendedor(Integer vendedorId);
-    List<Vendedor> getAllVendedor();
-    String createVendedor(Vendedor vendedor);
-    Vendedor updateVendedor(Vendedor vendedor);
-    String deleteVendedor(Integer vendedorId);
+    Vendedor getVendedor(@NonNull Integer vendedorId);
 
+    List<Vendedor> getAllVendedor();
+
+    String createVendedor(@NonNull Vendedor vendedor);
+
+    Vendedor updateVendedor(@NonNull Vendedor vendedor);
+
+    String deleteVendedor(@NonNull Integer vendedorId);
 
 }

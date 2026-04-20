@@ -1,11 +1,11 @@
 package com.example.vendedorservice.controller;
 
-
 import com.example.vendedorservice.model.Vendedor;
 import com.example.vendedorservice.service.VendedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +18,12 @@ public class VendedorController {
     VendedorService vendedorService;
 
     @PostMapping(path = "create", consumes = "application/json")
-    public ResponseEntity<String> createVendedor(@RequestBody Vendedor vendedor) {
+    public ResponseEntity<String> createVendedor(@RequestBody @NonNull Vendedor vendedor) {
         return new ResponseEntity<>(vendedorService.createVendedor(vendedor), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "{vendedorId}", produces = "application/json")
-    public ResponseEntity<Vendedor> getVendedor(@PathVariable("vendedorId") Integer vendedorId) {
+    public ResponseEntity<Vendedor> getVendedor(@PathVariable("vendedorId") @NonNull Integer vendedorId) {
         return new ResponseEntity<>(vendedorService.getVendedor(vendedorId), HttpStatus.OK);
     }
 
@@ -33,12 +33,12 @@ public class VendedorController {
     }
 
     @PutMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Vendedor> updateVendedor(@RequestBody Vendedor vendedor) {
+    public ResponseEntity<Vendedor> updateVendedor(@RequestBody @NonNull Vendedor vendedor) {
         return new ResponseEntity<>(vendedorService.updateVendedor(vendedor), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{vendedorId}")
-    public ResponseEntity<String> deleteVendedor(@PathVariable("vendedorId") Integer vendedorId) {
+    public ResponseEntity<String> deleteVendedor(@PathVariable("vendedorId") @NonNull Integer vendedorId) {
         return new ResponseEntity<>(vendedorService.deleteVendedor(vendedorId), HttpStatus.OK);
     }
 
