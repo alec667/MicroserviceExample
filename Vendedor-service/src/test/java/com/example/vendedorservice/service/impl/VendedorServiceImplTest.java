@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,8 +47,8 @@ class VendedorServiceImplTest {
         testVendedor1 = new Vendedor(1, "name1", "phone 1", ventasDesc1, clientes1);
         testVendedor2 = new Vendedor(2, "name2", "phone 2", ventasDesc2, clientes2);
         testList = Arrays.asList(testVendedor1, testVendedor2);
-        dao.save(testVendedor1);
-        dao.save(testVendedor2);
+        dao.save(Objects.requireNonNull(testVendedor1));
+        dao.save(Objects.requireNonNull(testVendedor2));
 
     }
 
