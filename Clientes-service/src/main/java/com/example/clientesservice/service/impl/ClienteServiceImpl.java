@@ -4,24 +4,26 @@ import com.example.clientesservice.dao.ClienteDAO;
 import com.example.clientesservice.exception.ClienteNotFoundException;
 import com.example.clientesservice.model.Cliente;
 import com.example.clientesservice.service.ClienteService;
+
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
-    final
-    ClienteDAO dao;
+    final ClienteDAO dao;
 
     public ClienteServiceImpl(ClienteDAO dao) {
         this.dao = dao;
     }
 
     @Override
-    public Cliente getCliente(Integer clienteId) {
+    public Cliente getCliente(@NonNull Integer clienteId) {
         Cliente client = new Cliente();
         Optional<Cliente> optional = dao.findById(clienteId);
         if (optional.isPresent()) {
@@ -40,7 +42,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public String createCliente(Cliente cliente) {
+    public String createCliente(@NonNull Cliente cliente) {
         try {
             dao.save(cliente);
             return "Cliente creado";
@@ -50,9 +52,9 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Cliente updateCliente(Cliente cliente) {
+    public Cliente updateCliente(@NonNull Cliente cliente) {
         Cliente updatedClient = new Cliente();
-        Optional<Cliente> optional = dao.findById(cliente.getClienteId());
+        Optional<Cliente> optional = dao.findById(Objects.requireNonNull(cliente.getClienteId()));
         if (optional.isPresent()) {
             updatedClient = optional.get();
             updatedClient.setClienteName(cliente.getClienteName());
@@ -68,7 +70,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public String deleteCliente(Integer clienteId) {
+    public String deleteCliente(@NonNull Integer clienteId) {
         Optional<Cliente> optional = dao.findById(clienteId);
         if (optional.isEmpty()) {
             return "Cliente Id: " + clienteId + " No Existe";
@@ -82,11 +84,10 @@ public class ClienteServiceImpl implements ClienteService {
     public List<String> getByVendedorName(String name) {
         List<String> cliByVendedor = new ArrayList<>();
         List<Cliente> clientes = dao.findByVendedorAsociadoName(name);
-        for (Cliente c: clientes) {
+        for (Cliente c : clientes) {
             cliByVendedor.add(c.getClienteName());
         }
         return cliByVendedor;
     }
-
 
 }

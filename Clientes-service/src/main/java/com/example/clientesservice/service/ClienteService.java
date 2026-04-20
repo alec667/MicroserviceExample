@@ -4,12 +4,19 @@ import com.example.clientesservice.model.Cliente;
 
 import java.util.List;
 
+import org.springframework.lang.NonNull;
+
 public interface ClienteService {
 
-    Cliente getCliente(Integer clienteId);
+    Cliente getCliente(@NonNull Integer clienteId);
+
     List<Cliente> getAllCliente();
-    String createCliente(Cliente cliente);
-    Cliente updateCliente(Cliente cliente);
-    String deleteCliente(Integer clienteId);
+
+    String createCliente(@NonNull Cliente cliente);
+
+    Cliente updateCliente(@NonNull Cliente cliente);
+
+    String deleteCliente(@NonNull Integer clienteId);
+
     List<String> getByVendedorName(String name);
 }
