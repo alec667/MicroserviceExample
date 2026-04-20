@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -31,14 +32,14 @@ class VentasServiceImplTest {
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
         this.ventasService = new VentasServiceImpl(ventasDAO);
-        testVenta1 = new Ventas(1,1 , "product 1");
-        testVenta2 = new Ventas(2,1, "product 2");
-        testVenta3 = new Ventas(3, 1,"product 1");
-        testVenta4 = new Ventas(4, 2,"product 2");
-        ventasDAO.save(testVenta1);
-        ventasDAO.save(testVenta2);
-        ventasDAO.save(testVenta3);
-        ventasDAO.save(testVenta4);
+        testVenta1 = new Ventas(1, 1, "product 1");
+        testVenta2 = new Ventas(2, 1, "product 2");
+        testVenta3 = new Ventas(3, 1, "product 1");
+        testVenta4 = new Ventas(4, 2, "product 2");
+        ventasDAO.save(Objects.requireNonNull(testVenta1));
+        ventasDAO.save(Objects.requireNonNull(testVenta2));
+        ventasDAO.save(Objects.requireNonNull(testVenta3));
+        ventasDAO.save(Objects.requireNonNull(testVenta4));
         testList = Arrays.asList(testVenta1, testVenta2, testVenta3, testVenta4);
 
     }
@@ -72,7 +73,7 @@ class VentasServiceImplTest {
         mock(Ventas.class);
         mock(VentasDAO.class);
 
-        Ventas nuevaVenta = new Ventas(5,2, "product 1");
+        Ventas nuevaVenta = new Ventas(5, 2, "product 1");
 
         when(ventasDAO.save(nuevaVenta)).thenReturn(nuevaVenta);
         assertThat(ventasService.createVenta(nuevaVenta)).isEqualTo("Venta creada");
@@ -84,7 +85,7 @@ class VentasServiceImplTest {
         mock(Ventas.class);
         mock(VentasDAO.class);
 
-        Ventas updatedVenta = new Ventas(1,1, "product 2");
+        Ventas updatedVenta = new Ventas(1, 1, "product 2");
 
         when(ventasDAO.save(updatedVenta)).thenReturn(updatedVenta);
         assertThat(ventasService.updateVenta(updatedVenta)).isEqualTo(updatedVenta);
@@ -107,7 +108,7 @@ class VentasServiceImplTest {
         mock(VentasDAO.class);
 
         List<Ventas> ventas = Arrays.asList(testVenta1, testVenta3);
-        List<String> product = Arrays.asList(testVenta1.getProducto(),  testVenta3.getProducto());
+        List<String> product = Arrays.asList(testVenta1.getProducto(), testVenta3.getProducto());
 
         when(ventasDAO.findByVendedorId(1)).thenReturn(ventas);
         assertThat(ventasService.getAllByVendedor(1)).isEqualTo(product);

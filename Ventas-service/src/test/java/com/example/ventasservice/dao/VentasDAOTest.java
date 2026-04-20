@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,14 +23,14 @@ class VentasDAOTest {
 
     @BeforeEach
     void setUp() {
-        testVenta1 = new Ventas(1, 1,"product 1");
-        testVenta2 = new Ventas(2,1, "product 2");
-        testVenta3 = new Ventas(3, 1,"product 1");
-        testVenta4 = new Ventas(4,2, "product 2");
-        dao.save(testVenta1);
-        dao.save(testVenta2);
-        dao.save(testVenta3);
-        dao.save(testVenta4);
+        testVenta1 = new Ventas(1, 1, "product 1");
+        testVenta2 = new Ventas(2, 1, "product 2");
+        testVenta3 = new Ventas(3, 1, "product 1");
+        testVenta4 = new Ventas(4, 2, "product 2");
+        dao.save(Objects.requireNonNull(testVenta1));
+        dao.save(Objects.requireNonNull(testVenta2));
+        dao.save(Objects.requireNonNull(testVenta3));
+        dao.save(Objects.requireNonNull(testVenta4));
     }
 
     @AfterEach
