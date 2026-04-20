@@ -11,8 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -31,128 +32,131 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ClienteController.class)
 class ClienteControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+        @Autowired
+        MockMvc mockMvc;
 
-    @MockBean
-    private ClienteService clienteService;
+        @MockitoBean
+        private ClienteService clienteService;
 
-    @InjectMocks
-    private ClienteController clienteController;
+        @InjectMocks
+        private ClienteController clienteController;
 
-    AutoCloseable autoCloseable;
-    Cliente testCliente1, testCliente2, testCliente3, testCliente4;
-    List<Cliente> testList;
-    ObjectMapper objectMapper = new ObjectMapper();
-    ObjectWriter objectWriter = objectMapper.writer();
+        AutoCloseable autoCloseable;
+        Cliente testCliente1, testCliente2, testCliente3, testCliente4;
+        List<Cliente> testList;
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectWriter objectWriter = objectMapper.writer();
 
-    @BeforeEach
-    void setUp() {
-        autoCloseable = MockitoAnnotations.openMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(clienteController).build();
+        @BeforeEach
+        void setUp() {
+                autoCloseable = MockitoAnnotations.openMocks(this);
+                this.mockMvc = MockMvcBuilders.standaloneSetup(clienteController).build();
 
-        testCliente1 = new Cliente(1, "test name 1", "vendor 1");
-        testCliente2 = new Cliente(2, "test name 2", "vendor 2");
-        testCliente3 = new Cliente(3, "test name 3", "vendor 1");
-        testCliente4 = new Cliente(4, "test name 4", "vendor 2");
-        testList = Arrays.asList(testCliente1, testCliente2, testCliente3, testCliente4);
-    }
+                testCliente1 = new Cliente(1, "test name 1", "vendor 1");
+                testCliente2 = new Cliente(2, "test name 2", "vendor 2");
+                testCliente3 = new Cliente(3, "test name 3", "vendor 1");
+                testCliente4 = new Cliente(4, "test name 4", "vendor 2");
+                testList = Arrays.asList(testCliente1, testCliente2, testCliente3, testCliente4);
+        }
 
-    @AfterEach
-    void tearDown() throws Exception {
-        autoCloseable.close();
-    }
+        @AfterEach
+        void tearDown() throws Exception {
+                autoCloseable.close();
+        }
 
-    @Test
-    void getCliente() throws Exception {
-        when(clienteService.getCliente(1)).thenReturn(testCliente1);
+        @Test
+        void getCliente() throws Exception {
+                when(clienteService.getCliente(1)).thenReturn(testCliente1);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get("/clientes/1")
-                .contentType(MediaType.APPLICATION_JSON);
+                MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                                .get("/clientes/1")
+                                .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON));
 
-        mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$.clienteName", is("test name 1")));
-    }
+                mockMvc.perform(request)
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$", Objects.requireNonNull(notNullValue())))
+                                .andExpect(jsonPath("$.clienteName", Objects.requireNonNull(is("test name 1"))));
+        }
 
-    @Test
-    void getAllClientes() throws Exception {
-        when(clienteService.getAllCliente()).thenReturn(testList);
+        @Test
+        void getAllClientes() throws Exception {
+                when(clienteService.getAllCliente()).thenReturn(testList);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get("/clientes/all")
-                .contentType(MediaType.APPLICATION_JSON);
+                MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                                .get("/clientes/all")
+                                .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON));
 
-        mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$[0].clienteName", is("test name 1")))
-                .andExpect(jsonPath("$[1].vendedorAsociadoName", is("vendor 2")));
-    }
+                mockMvc.perform(request)
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$", Objects.requireNonNull(notNullValue())))
+                                .andExpect(jsonPath("$[0].clienteName", Objects.requireNonNull(is("test name 1"))))
+                                .andExpect(jsonPath("$[1].vendedorAsociadoName",
+                                                Objects.requireNonNull(is("vendor 2"))));
+        }
 
-    @Test
-    void createCliente() throws Exception {
-        Cliente nuevoCliente = new Cliente(3, "test name 3", "vendor 3");
-        String content = objectWriter.writeValueAsString(nuevoCliente);
+        @Test
+        void createCliente() throws Exception {
+                Cliente nuevoCliente = new Cliente(3, "test name 3", "vendor 3");
+                String content = objectWriter.writeValueAsString(nuevoCliente);
 
-        when(clienteService.createCliente(nuevoCliente)).thenReturn("Cliente creado");
+                when(clienteService.createCliente(nuevoCliente)).thenReturn("Cliente creado");
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .post("/clientes/create")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content);
+                MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                                .post("/clientes/create")
+                                .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON))
+                                .content(Objects.requireNonNull(content));
 
-        mockMvc.perform(request)
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(result -> assertThat(result.getResponse().getContentAsString()).isEqualTo("Cliente creado"));
-    }
+                mockMvc.perform(request)
+                                .andExpect(status().isCreated())
+                                .andExpect(jsonPath("$", Objects.requireNonNull(notNullValue())))
+                                .andExpect(result -> assertThat(result.getResponse().getContentAsString())
+                                                .isEqualTo("Cliente creado"));
+        }
 
-    @Test
-    void updateCliente() throws Exception {
-        Cliente updatedCliente = new Cliente(1, "test name 1", "vendor 3 (updated)");
-        String content = objectWriter.writeValueAsString(updatedCliente);
+        @Test
+        void updateCliente() throws Exception {
+                Cliente updatedCliente = new Cliente(1, "test name 1", "vendor 3 (updated)");
+                String content = objectWriter.writeValueAsString(updatedCliente);
 
-        when(clienteService.updateCliente(updatedCliente)).thenReturn(updatedCliente);
+                when(clienteService.updateCliente(updatedCliente)).thenReturn(updatedCliente);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .put("/clientes")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content);
+                MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                                .put("/clientes")
+                                .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON))
+                                .content(Objects.requireNonNull(content));
 
-        mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$.vendedorAsociadoName", is("vendor 3 (updated)")));
-    }
+                mockMvc.perform(request)
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$", Objects.requireNonNull(notNullValue())))
+                                .andExpect(jsonPath("$.vendedorAsociadoName",
+                                                Objects.requireNonNull(is("vendor 3 (updated)"))));
+        }
 
-    @Test
-    void deleteCliente() throws Exception {
-        when(clienteService.deleteCliente(1)).thenReturn("Cliente Id: 1 BORRADO.");
+        @Test
+        void deleteCliente() throws Exception {
+                when(clienteService.deleteCliente(1)).thenReturn("Cliente Id: 1 BORRADO.");
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .delete("/clientes/1");
+                MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                                .delete("/clientes/1");
 
-        mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(result -> assertThat(result.getResponse().getContentAsString()).isEqualTo("Cliente Id: 1 BORRADO."));
-    }
+                mockMvc.perform(request)
+                                .andExpect(status().isOk())
+                                .andExpect(result -> assertThat(result.getResponse().getContentAsString())
+                                                .isEqualTo("Cliente Id: 1 BORRADO."));
+        }
 
-    @Test
-    void getClienteByName() throws Exception {
-        List<String> clientesV1 = Arrays.asList(testCliente1.getVendedorAsociadoName(), testCliente3.getVendedorAsociadoName());
-        when(clienteService.getByVendedorName("vendor 1")).thenReturn(clientesV1);
+        @Test
+        void getClienteByName() throws Exception {
+                List<String> clientesV1 = Arrays.asList(testCliente1.getVendedorAsociadoName(),
+                                testCliente3.getVendedorAsociadoName());
+                when(clienteService.getByVendedorName("vendor 1")).thenReturn(clientesV1);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.
-                get("/clientes/vendedor/vendor 1")
-                .contentType(MediaType.APPLICATION_JSON);
+                MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/clientes/vendedor/vendor 1")
+                                .contentType(Objects.requireNonNull(MediaType.APPLICATION_JSON));
 
-        mockMvc.perform(request).andExpect(status().isOk())
-                .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$[0]", is("vendor 1")));
+                mockMvc.perform(request).andExpect(status().isOk())
+                                .andExpect(jsonPath("$", Objects.requireNonNull(notNullValue())))
+                                .andExpect(jsonPath("$[0]", Objects.requireNonNull(is("vendor 1"))));
 
-
-    }
+        }
 }
