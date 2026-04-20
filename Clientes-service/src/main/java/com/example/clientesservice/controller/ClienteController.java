@@ -5,6 +5,7 @@ import com.example.clientesservice.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class ClienteController {
     ClienteService service;
 
     @GetMapping(path = "{clienteId}", produces = "application/json")
-    public ResponseEntity<Cliente> getCliente(@PathVariable("clienteId") Integer clienteId) {
+    public ResponseEntity<Cliente> getCliente(@PathVariable("clienteId") @NonNull Integer clienteId) {
         return new ResponseEntity<>(service.getCliente(clienteId), HttpStatus.OK);
     }
 
@@ -26,23 +27,23 @@ public class ClienteController {
         return new ResponseEntity<>(service.getAllCliente(), HttpStatus.OK);
     }
 
-    @PostMapping(path = "/create",consumes = "application/json")
-    public ResponseEntity<String> createCliente(@RequestBody Cliente cliente) {
+    @PostMapping(path = "/create", consumes = "application/json")
+    public ResponseEntity<String> createCliente(@RequestBody @NonNull Cliente cliente) {
         return new ResponseEntity<>(service.createCliente(cliente), HttpStatus.CREATED);
     }
 
     @PutMapping(produces = "application/json", consumes = "application/json")
-    public ResponseEntity<Cliente> updateCliente(@RequestBody Cliente cliente) {
+    public ResponseEntity<Cliente> updateCliente(@RequestBody @NonNull Cliente cliente) {
         return new ResponseEntity<>(service.updateCliente(cliente), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{clienteId}")
-    public ResponseEntity<String> deleteCliente(@PathVariable("clienteId") Integer clienteId) {
+    public ResponseEntity<String> deleteCliente(@PathVariable("clienteId") @NonNull Integer clienteId) {
         return new ResponseEntity<>(service.deleteCliente(clienteId), HttpStatus.OK);
     }
 
     @GetMapping(path = "vendedor/{vName}")
-    public ResponseEntity<List<String>> getByVendedorName(@PathVariable("vName") String name){
+    public ResponseEntity<List<String>> getByVendedorName(@PathVariable("vName") String name) {
         return new ResponseEntity<>(service.getByVendedorName(name), HttpStatus.OK);
     }
 
