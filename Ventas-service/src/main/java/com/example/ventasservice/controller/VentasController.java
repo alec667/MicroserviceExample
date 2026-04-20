@@ -5,6 +5,7 @@ import com.example.ventasservice.service.VentasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class VentasController {
     VentasService ventasService;
 
     @GetMapping(path = "{ventaId}", produces = "application/json")
-    public ResponseEntity<Ventas> getVenta(@PathVariable("ventaId") Integer ventaId) {
+    public ResponseEntity<Ventas> getVenta(@PathVariable("ventaId") @NonNull Integer ventaId) {
         return new ResponseEntity<>(ventasService.getVenta(ventaId), HttpStatus.OK);
     }
 
@@ -27,23 +28,23 @@ public class VentasController {
     }
 
     @PostMapping(path = "/create", consumes = "application/json")
-    public ResponseEntity<String> createVenta(@RequestBody Ventas venta) {
+    public ResponseEntity<String> createVenta(@RequestBody @NonNull Ventas venta) {
         return new ResponseEntity<>(ventasService.createVenta(venta), HttpStatus.CREATED);
     }
 
     @PutMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Ventas> updateVenta(@RequestBody Ventas venta) {
+    public ResponseEntity<Ventas> updateVenta(@RequestBody @NonNull Ventas venta) {
         return new ResponseEntity<>(ventasService.updateVenta(venta), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{ventaId}")
-    public ResponseEntity<String> deleteVenta(@PathVariable("ventaId") Integer ventaId) {
+    public ResponseEntity<String> deleteVenta(@PathVariable("ventaId") @NonNull Integer ventaId) {
         return new ResponseEntity<>(ventasService.deleteVenta(ventaId), HttpStatus.OK);
     }
 
-    //feign
+    // feign
     @GetMapping(path = "/vendedor/{vendedorId}")
-    public ResponseEntity<List<String>> getAllByVendedor(@PathVariable("vendedorId") Integer vendedorId){
+    public ResponseEntity<List<String>> getAllByVendedor(@PathVariable("vendedorId") @NonNull Integer vendedorId) {
         return new ResponseEntity<>(ventasService.getAllByVendedor(vendedorId), HttpStatus.OK);
     }
 

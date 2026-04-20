@@ -4,24 +4,26 @@ import com.example.ventasservice.dao.VentasDAO;
 import com.example.ventasservice.exception.VentaNotFoundException;
 import com.example.ventasservice.model.Ventas;
 import com.example.ventasservice.service.VentasService;
+
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class VentasServiceImpl implements VentasService {
 
-    final
-    VentasDAO dao;
+    final VentasDAO dao;
 
     public VentasServiceImpl(VentasDAO dao) {
         this.dao = dao;
     }
 
     @Override
-    public Ventas getVenta(Integer ventaId) {
+    public Ventas getVenta(@NonNull Integer ventaId) {
         Ventas venta = new Ventas();
         Optional<Ventas> optional = dao.findById(ventaId);
         if (optional.isPresent()) {
@@ -40,7 +42,7 @@ public class VentasServiceImpl implements VentasService {
     }
 
     @Override
-    public String createVenta(Ventas ventas) {
+    public String createVenta(@NonNull Ventas ventas) {
         try {
             dao.save(ventas);
             return "Venta creada";
@@ -50,9 +52,9 @@ public class VentasServiceImpl implements VentasService {
     }
 
     @Override
-    public Ventas updateVenta(Ventas ventas) {
+    public Ventas updateVenta(@NonNull Ventas ventas) {
         Ventas updatedVenta = new Ventas();
-        Optional<Ventas> optional = dao.findById(ventas.getVentaId());
+        Optional<Ventas> optional = dao.findById(Objects.requireNonNull(ventas.getVentaId()));
         if (optional.isPresent()) {
             updatedVenta = optional.get();
             updatedVenta.setProducto(ventas.getProducto());
@@ -66,7 +68,7 @@ public class VentasServiceImpl implements VentasService {
     }
 
     @Override
-    public String deleteVenta(Integer ventaId) {
+    public String deleteVenta(@NonNull Integer ventaId) {
         Optional<Ventas> optional = dao.findById(ventaId);
         if (optional.isPresent()) {
             dao.deleteById(ventaId);
@@ -77,10 +79,10 @@ public class VentasServiceImpl implements VentasService {
     }
 
     @Override
-    public List<String> getAllByVendedor(Integer vendedorId) {
+    public List<String> getAllByVendedor(@NonNull Integer vendedorId) {
         List<String> productos = new ArrayList<>();
         List<Ventas> ventasByVendedor = dao.findByVendedorId(vendedorId);
-        for (Ventas v: ventasByVendedor) {
+        for (Ventas v : ventasByVendedor) {
             productos.add(v.getProducto());
         }
         return productos;
